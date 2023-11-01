@@ -1,9 +1,9 @@
-package com.ons.securitylayerJwt.presentation;
+package com.ons.securejwt.presentation;
 
 
-import com.ons.securitylayerJwt.businessLogic.IUserService;
-import com.ons.securitylayerJwt.dto.LoginDto;
-import com.ons.securitylayerJwt.dto.RegisterDto;
+import com.ons.securejwt.service.UserService;
+import com.ons.securejwt.dto.LoginDto;
+import com.ons.securejwt.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserRestController {
 
 
-    private final IUserService iUserService ;
+    private final UserService userService;
 
     //RessourceEndPoint:http://localhost:8087/api/user/register
     @PostMapping("/register")
     public ResponseEntity<?> register (@RequestBody RegisterDto registerDto)
-    { return  iUserService.register(registerDto);}
+    { return  userService.register(registerDto);}
 
     //RessourceEndPoint:http://localhost:8087/api/user/authenticate
     @PostMapping("/authenticate")
     public String authenticate(@RequestBody LoginDto loginDto)
-    { return  iUserService.authenticate(loginDto);}
+    { return  userService.authenticate(loginDto);}
 
 
 

@@ -1,4 +1,4 @@
-package com.ons.securitylayerJwt.models;
+package com.ons.securejwt.models;
 
 
 public enum RoleName {

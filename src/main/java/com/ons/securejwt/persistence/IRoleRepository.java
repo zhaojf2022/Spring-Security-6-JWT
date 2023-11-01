@@ -1,7 +1,7 @@
-package com.ons.securitylayerJwt.persistence;
+package com.ons.securejwt.persistence;
 
-import com.ons.securitylayerJwt.models.Role;
-import com.ons.securitylayerJwt.models.RoleName;
+import com.ons.securejwt.models.Role;
+import com.ons.securejwt.models.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IRoleRepository extends JpaRepository<Role,Integer> {

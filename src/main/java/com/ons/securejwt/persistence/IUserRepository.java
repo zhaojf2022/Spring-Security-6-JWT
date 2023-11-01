@@ -1,6 +1,6 @@
-package com.ons.securitylayerJwt.persistence;
+package com.ons.securejwt.persistence;
 
-import com.ons.securitylayerJwt.models.User;
+import com.ons.securejwt.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

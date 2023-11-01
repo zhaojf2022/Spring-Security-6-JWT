@@ -1,4 +1,4 @@
-package com.ons.securitylayerJwt.presentation;
+package com.ons.securejwt.presentation;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/superadmin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
-public class SuperadminRestController {
+public class AdminRestController {
 
 
-    //RessourceEndPoint:http://localhost:8087/api/superadmin/hi
-    @GetMapping("/hi")
-    public String sayHi ()
-    { return "Hi" ;}
+    //RessourceEndPoint:http://localhost:8087/api/admin/hello
+    @GetMapping("/hello")
+    public String sayHello ()
+    { return "Hello" ;}
 
 
 }

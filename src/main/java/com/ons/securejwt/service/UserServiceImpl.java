@@ -1,14 +1,14 @@
-package com.ons.securitylayerJwt.businessLogic;
+package com.ons.securejwt.service;
 
-import com.ons.securitylayerJwt.dto.BearerToken;
-import com.ons.securitylayerJwt.dto.LoginDto;
-import com.ons.securitylayerJwt.dto.RegisterDto;
-import com.ons.securitylayerJwt.models.Role;
-import com.ons.securitylayerJwt.models.RoleName;
-import com.ons.securitylayerJwt.models.User;
-import com.ons.securitylayerJwt.persistence.IRoleRepository;
-import com.ons.securitylayerJwt.persistence.IUserRepository;
-import com.ons.securitylayerJwt.security.JwtUtilities;
+import com.ons.securejwt.dto.BearerToken;
+import com.ons.securejwt.dto.LoginDto;
+import com.ons.securejwt.dto.RegisterDto;
+import com.ons.securejwt.models.Role;
+import com.ons.securejwt.models.RoleName;
+import com.ons.securejwt.models.User;
+import com.ons.securejwt.persistence.IRoleRepository;
+import com.ons.securejwt.persistence.IUserRepository;
+import com.ons.securejwt.security.JwtUtilities;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService implements IUserService{
+public class UserServiceImpl implements UserService {
 
     private final AuthenticationManager authenticationManager ;
     private final IUserRepository iUserRepository ;
@@ -50,7 +50,7 @@ public class UserService implements IUserService{
 
     @Override
     public ResponseEntity<?> register(RegisterDto registerDto) {
-        if(iUserRepository.existsByEmail(registerDto.getEmail()))
+        if(Boolean.TRUE.equals(iUserRepository.existsByEmail(registerDto.getEmail())))
         { return  new ResponseEntity<>("email is already taken !", HttpStatus.SEE_OTHER); }
         else
         { User user = new User();
@@ -80,8 +80,7 @@ public class UserService implements IUserService{
         User user = iUserRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<String> rolesNames = new ArrayList<>();
         user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-        String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
-        return token;
+        return jwtUtilities.generateToken(user.getUsername(),rolesNames);
     }
 
 }

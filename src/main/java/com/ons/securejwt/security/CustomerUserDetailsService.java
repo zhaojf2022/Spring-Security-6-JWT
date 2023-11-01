@@ -1,15 +1,12 @@
-package com.ons.securitylayerJwt.security;
+package com.ons.securejwt.security;
 
-import com.ons.securitylayerJwt.persistence.IUserRepository;
-import com.ons.securitylayerJwt.models.User;
+import com.ons.securejwt.persistence.IUserRepository;
+import com.ons.securejwt.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Component

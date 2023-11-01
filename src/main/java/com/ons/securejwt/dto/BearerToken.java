@@ -1,4 +1,4 @@
-package com.ons.securitylayerJwt.dto;
+package com.ons.securejwt.dto;
 
 
 import lombok.Data;
