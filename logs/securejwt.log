@@ -23,3 +23,4 @@
 2023-11-01T17:32:49.240+08:00  INFO 91641 --- [main] c.o.s.SecurityLayerJwtApplication        : No active profile set, falling back to 1 default profile: "default"
 2023-11-01T17:32:50.445+08:00  INFO 91641 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
 2023-11-01T17:32:50.552+08:00  INFO 91641 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 2 JPA repository interfaces.
+

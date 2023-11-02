@@ -3,6 +3,9 @@ package com.ons.securejwt.dto;
 
 import lombok.Data;
 
+/**
+ * token 包装器
+ */
 @Data
 public class BearerToken {
 

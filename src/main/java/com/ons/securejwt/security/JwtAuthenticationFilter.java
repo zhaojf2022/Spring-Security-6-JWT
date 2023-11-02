@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtilities jwtUtilities;
-    private final CustomerUserDetailsService customerUserDetailsService;
+    private final CustomerUserDetailsServiceImpl customerUserDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 提取 email
             String email = jwtUtilities.extractUsername(token);
             // 根据 email 获取此用户的 UserDetail 对象
-            UserDetails userDetails = customerUserDetailsService.loadUserByUsername(email);
+            UserDetails userDetails = customerUserDetailsServiceImpl.loadUserByUsername(email);
 
             if (userDetails != null) {
                 // 如果用户对象不为空，则对用户的名称和权限进行认证

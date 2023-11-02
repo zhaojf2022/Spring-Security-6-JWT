@@ -31,11 +31,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final AuthenticationManager authenticationManager ;
-    private final IUserRepository iUserRepository ;
-    private final IRoleRepository iRoleRepository ;
-    private final PasswordEncoder passwordEncoder ;
-    private final JwtUtilities jwtUtilities ;
+    private final AuthenticationManager authenticationManager;
+    private final IUserRepository iUserRepository;
+    private final IRoleRepository iRoleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtilities jwtUtilities;
 
 
     @Override
@@ -48,39 +48,59 @@ public class UserServiceImpl implements UserService {
         return iUserRepository.save(user);
     }
 
+    /**
+     * 用户注册
+     * @param registerDto RegisterDto
+     * @return ResponseEntity<?>
+     */
     @Override
     public ResponseEntity<?> register(RegisterDto registerDto) {
-        if(Boolean.TRUE.equals(iUserRepository.existsByEmail(registerDto.getEmail())))
-        { return  new ResponseEntity<>("email is already taken !", HttpStatus.SEE_OTHER); }
-        else
-        { User user = new User();
+
+        if (Boolean.TRUE.equals(iUserRepository.existsByEmail(registerDto.getEmail()))) {
+            return new ResponseEntity<>("邮箱已经被使用 !", HttpStatus.SEE_OTHER);
+        } else {
+            // 创建新的User对象，填写注册用户的信息
+            User user = new User();
             user.setEmail(registerDto.getEmail());
             user.setFirstName(registerDto.getFirstName());
             user.setLastName(registerDto.getLastName());
             user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-            //By Default , he/she is a simple user
+            // 缺省的角色是'user'
             Role role = iRoleRepository.findByRoleName(RoleName.USER);
+            // Collections.singletonList(role)  创建了一个只包含一个元素的列表，元素为变量 role
             user.setRoles(Collections.singletonList(role));
+
+            // 调用接口方法保存用户
             iUserRepository.save(user);
-            String token = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
-            return new ResponseEntity<>(new BearerToken(token , "Bearer "),HttpStatus.OK);
+            // 生成token
+            String token = jwtUtilities.generateToken(registerDto.getEmail(),
+                Collections.singletonList(role.getRoleName()));
+
+            // 创建token包装对象（指定 token 类型为："Bearer "），并返回包含这个token包装器对象的响应实体
+            return new ResponseEntity<>(new BearerToken(token, "Bearer "), HttpStatus.OK);
 
         }
-        }
+    }
 
+    /**
+     * 用户登录
+     * @param loginDto
+     * @return
+     */
     @Override
     public String authenticate(LoginDto loginDto) {
-      Authentication authentication= authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getEmail(),
-                        loginDto.getPassword()
-                )
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginDto.getEmail(),
+                loginDto.getPassword()
+            )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = iUserRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = iUserRepository.findByEmail(authentication.getName())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<String> rolesNames = new ArrayList<>();
-        user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-        return jwtUtilities.generateToken(user.getUsername(),rolesNames);
+        user.getRoles().forEach(r -> rolesNames.add(r.getRoleName()));
+        return jwtUtilities.generateToken(user.getUsername(), rolesNames);
     }
 
 }
