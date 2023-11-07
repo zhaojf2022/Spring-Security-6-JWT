@@ -6,9 +6,9 @@ import com.ons.securejwt.dto.RegisterDto;
 import com.ons.securejwt.models.Role;
 import com.ons.securejwt.models.RoleName;
 import com.ons.securejwt.models.User;
-import com.ons.securejwt.persistence.IRoleRepository;
-import com.ons.securejwt.persistence.IUserRepository;
-import com.ons.securejwt.security.JwtUtilities;
+import com.ons.securejwt.models.IRoleRepository;
+import com.ons.securejwt.models.IUserRepository;
+import com.ons.securejwt.utilt.JwtUtilities;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -83,23 +83,33 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户登录
-     * @param loginDto
-     * @return
+     * 验证用户名称，返回 JWT 令牌
+     * @param loginDto LoginDto
+     * @return String
      */
     @Override
     public String authenticate(LoginDto loginDto) {
+
+        // 使用传递的登录参数，创建一个认证对象
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(),
                 loginDto.getPassword()
             )
         );
+
+        // 将此认证对象设置到 SecurityContextHolder 的上下文中
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 查询账户是否存在，不存在则抛出异常
         User user = iUserRepository.findByEmail(authentication.getName())
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("用户不存在"));
+
+        // 遍历用户的角色列表，并将每个角色名称添加到 rolesNames 列表中
         List<String> rolesNames = new ArrayList<>();
         user.getRoles().forEach(r -> rolesNames.add(r.getRoleName()));
+
+        // 生成一个JWT令牌，并返回给调用者
         return jwtUtilities.generateToken(user.getUsername(), rolesNames);
     }
 

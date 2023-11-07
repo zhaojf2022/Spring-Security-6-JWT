@@ -1,4 +1,4 @@
-package com.ons.securejwt.security;
+package com.ons.securejwt.utilt;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;

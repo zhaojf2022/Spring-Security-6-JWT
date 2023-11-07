@@ -1,5 +1,7 @@
-package com.ons.securejwt.security;
+package com.ons.securejwt.config;
 
+import com.ons.securejwt.service.CustomerUserDetailsServiceImpl;
+import com.ons.securejwt.service.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,7 @@ public class SpringSecurityConfig {
             .and()
             // 配置请求的授权规则
             .authorizeHttpRequests()
+                .requestMatchers("/actuator/**").permitAll()                        // 允许 actuator 访问
                 .requestMatchers("/user/**").permitAll()                            // 允许所有用户访问"/user"开头的请求路径
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")                 // 允许 ADMIN 权限的用户访问"/admin"的开头的请求路径
                 .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN") ;     // 允许 SUPERADMIN 权限的用户访问"/superadmin"开头的请求路径

@@ -1,4 +1,4 @@
-package com.ons.securejwt.persistence;
+package com.ons.securejwt.models;
 
 import com.ons.securejwt.models.Role;
 import com.ons.securejwt.models.RoleName;

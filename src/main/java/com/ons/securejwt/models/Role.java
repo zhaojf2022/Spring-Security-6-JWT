@@ -6,15 +6,15 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
-
+/**
+ * 角色表
+ */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role implements Serializable  {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

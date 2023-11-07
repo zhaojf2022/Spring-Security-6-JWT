@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.*;
 
 
+/**
+ * 用户表
+ */
 @Entity
 @Getter
 @Setter
@@ -44,12 +47,14 @@ public class User implements Serializable , UserDetails {
     }
 
     /**
-     * 获取用户的权限列表：实现 UserDetails接口的getAuthorities方法
+     * 根据用户的角色获取用户的权限列表
      * @return Collection<? extends GrantedAuthority>
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // 对于每个角色，构造一个SimpleGrantedAuthority对象，然后将该对象添加到 authorities 列表中
         this.roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
         return authorities;
     }

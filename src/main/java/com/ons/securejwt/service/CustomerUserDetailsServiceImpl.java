@@ -1,7 +1,6 @@
-package com.ons.securejwt.security;
+package com.ons.securejwt.service;
 
-import com.ons.securejwt.persistence.IUserRepository;
-import com.ons.securejwt.models.User;
+import com.ons.securejwt.models.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

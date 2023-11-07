@@ -3,6 +3,9 @@ package com.ons.securejwt.models;
 
 public enum RoleName {
 
-    SUPERADMIN , ADMIN , USER;
+    /**
+     * 定义用户的可用角色
+     */
+    SUPERADMIN , ADMIN , USER
 
 }
