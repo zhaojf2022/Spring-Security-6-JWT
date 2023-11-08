@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 用户服务，包括保存用户和角色，用户注册，以及进行token认证
+ */
 
 @Service
 @Transactional
@@ -56,12 +59,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> register(RegisterDto registerDto) {
 
-        if (Boolean.TRUE.equals(iUserRepository.existsByEmail(registerDto.getEmail()))) {
+        if (Boolean.TRUE.equals(iUserRepository.existsByMobile(registerDto.getMobile()))) {
             return new ResponseEntity<>("邮箱已经被使用 !", HttpStatus.SEE_OTHER);
         } else {
             // 创建新的User对象，填写注册用户的信息
             User user = new User();
-            user.setEmail(registerDto.getEmail());
+            user.setMobile(registerDto.getMobile());
             user.setFirstName(registerDto.getFirstName());
             user.setLastName(registerDto.getLastName());
             user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
@@ -73,7 +76,7 @@ public class UserServiceImpl implements UserService {
             // 调用接口方法保存用户
             iUserRepository.save(user);
             // 生成token
-            String token = jwtUtilities.generateToken(registerDto.getEmail(),
+            String token = jwtUtilities.generateToken(registerDto.getMobile(),
                 Collections.singletonList(role.getRoleName()));
 
             // 创建token包装对象（指定 token 类型为："Bearer "），并返回包含这个token包装器对象的响应实体
@@ -93,7 +96,7 @@ public class UserServiceImpl implements UserService {
         // 使用传递的登录参数，创建一个认证对象
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                loginDto.getEmail(),
+                loginDto.getMobile(),
                 loginDto.getPassword()
             )
         );
@@ -102,7 +105,7 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 查询账户是否存在，不存在则抛出异常
-        User user = iUserRepository.findByEmail(authentication.getName())
+        User user = iUserRepository.findByMobile(authentication.getName())
             .orElseThrow(() -> new UsernameNotFoundException("用户不存在"));
 
         // 遍历用户的角色列表，并将每个角色名称添加到 rolesNames 列表中

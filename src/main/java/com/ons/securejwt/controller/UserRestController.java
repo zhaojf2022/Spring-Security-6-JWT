@@ -31,7 +31,7 @@ public class UserRestController {
     }
 
     /**
-     * 用户认证接口，认证通过后返回一个JWT 令牌（token）
+     * 用户登录认证接口，认证通过后返回一个JWT 令牌（token）
      * @param loginDto LoginDto
      * @return String
      */

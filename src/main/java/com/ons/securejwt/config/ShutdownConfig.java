@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 停止服务的配置：生成一个 TerminateBean
  * @author huangqingshi
  * @Date 2019-08-17
  */

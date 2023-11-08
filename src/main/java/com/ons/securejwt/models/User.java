@@ -31,7 +31,7 @@ public class User implements Serializable , UserDetails {
 
     String firstName ;
     String lastName ;
-    String email;
+    String mobile;
     String password ;
 
     // 一个用户可以有多个角色（数组）
@@ -40,8 +40,8 @@ public class User implements Serializable , UserDetails {
     @ManyToMany(fetch = FetchType.EAGER  , cascade = CascadeType.PERSIST)
     private List <Role> roles ;
 
-    public User (String email , String password , List<Role> roles) {
-      this.email= email ;
+    public User (String mobile , String password , List<Role> roles) {
+      this.mobile= mobile ;
       this.password=password ;
       this.roles=roles ;
     }
@@ -61,7 +61,7 @@ public class User implements Serializable , UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.mobile;
     }
 
     @Override

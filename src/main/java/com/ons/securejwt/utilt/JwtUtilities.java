@@ -27,7 +27,7 @@ public class JwtUtilities{
 
 
     /**
-     * 获取指定 JWT 全部的声明信息
+     * token解析：获取指定 JWT 全部的声明信息
      * @param token String
      * @return Claims
      */
@@ -40,7 +40,7 @@ public class JwtUtilities{
     }
 
     /**
-     * 使用指定的方法提取 token 中声明（Claims）部分的内部信息
+     * token 解析：使用指定的方法提取 token 中声明（Claims）部分的内部信息
      * @param token String
      * @param claimsResolver Function<Claims, T>
      * @return T
@@ -52,7 +52,7 @@ public class JwtUtilities{
     }
 
     /**
-     * 提取 token 中包含的过期时间信息
+     * token 解析：提取 token 中包含的过期时间
      * @param token String
      * @return Date
      */
@@ -61,7 +61,7 @@ public class JwtUtilities{
     }
 
     /**
-     * 提取 token 中包含的邮箱信息
+     * token 解析：提取 token 中包含的用户名
      * @param token String
      * @return String
      */
@@ -70,14 +70,14 @@ public class JwtUtilities{
     }
 
     /**
-     * 验证 token：判断邮箱是否正确，以及是否token 已过期
+     * 验证token中的用户名是否正确，以及是否在有效期内
      * @param token String
      * @param userDetails UserDetails
      * @return Boolean
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String email = extractUsername(token);
-        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String mobile = extractUsername(token);
+        return (mobile.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     /**
@@ -91,15 +91,15 @@ public class JwtUtilities{
     }
 
     /**
-     * 使用 email 和角色列表，生成新的 token
-     * @param email String
+     * 使用 mobile 和角色列表，生成新的 token
+     * @param mobile String
      * @param roles List<String>
      * @return String
      */
-    public String generateToken(String email , List<String> roles) {
+    public String generateToken(String mobile , List<String> roles) {
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(mobile)
                 .claim("role",roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(Date.from(Instant.now().plus(jwtExpiration, ChronoUnit.MILLIS)))
@@ -109,7 +109,7 @@ public class JwtUtilities{
     }
 
     /**
-     * 验证 token
+     * 验证 token 是否有效
      * @param token String
      * @return boolean
      */
@@ -145,11 +145,18 @@ public class JwtUtilities{
 
     public String getToken (HttpServletRequest httpServletRequest) {
 
+         log.info("收到请求：" + httpServletRequest.toString());
+
          final String bearerToken = httpServletRequest.getHeader("Authorization");
+         log.info("提取认证字符串：" + bearerToken);
 
          if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+             String tokenStr = bearerToken.substring(7);
+             log.info("解析 token: "+ tokenStr);
              // 返回 "Bearer " 之后的部分
-             return bearerToken.substring(7);
+             return tokenStr;
+         }else {
+             log.info("token字符串为空或没有以'Bearer '开头");
          }
 
          return null;

@@ -6,6 +6,6 @@ public enum RoleName {
     /**
      * 定义用户的可用角色
      */
-    SUPERADMIN , ADMIN , USER
+    SUPERADMIN , ADMIN , USER, SERVICE
 
 }

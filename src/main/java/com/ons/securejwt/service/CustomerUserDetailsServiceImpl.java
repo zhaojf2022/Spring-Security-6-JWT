@@ -16,14 +16,14 @@ public class CustomerUserDetailsServiceImpl implements UserDetailsService {
 
     /**
      * 根据用户名查找用户信息
-     * @param email 用户邮箱（用户名）
+     * @param mobile 用户手机号（用户名）
      * @return UserDetails
      * @throws UsernameNotFoundException 无法找到用户异常
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // 根据邮箱查找用户信息。如果找不到对应的用户，将抛出UsernameNotFoundException异常。如果找到了用户信息，将返回该用户信息。
-        return iUserRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found !"));
+    public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
+        // 根据手机号查找用户信息。如果找不到对应的用户，将抛出UsernameNotFoundException异常。如果找到了用户信息，将返回该用户信息。
+        return iUserRepository.findByMobile(mobile).orElseThrow(()-> new UsernameNotFoundException("找不到用户："+ mobile));
 
     }
 

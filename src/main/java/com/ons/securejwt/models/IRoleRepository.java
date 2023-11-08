@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface IRoleRepository extends JpaRepository<Role,Integer> {
 
     /**
-     * 此方法可以自动生成 SQL 语句，根据 rolename 字段来查询
-     * @param roleName Rolename
+     * 此方法可根据方法名称自动生成 SQL 语句，根据参数的类型（字段）和值 roleName 来生成条件
+     * @param roleName RoleName
      * @return Role
      */
     Role findByRoleName(RoleName roleName);
